@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UK Investment Tracker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .card { transition: all 0.3s; }
+    .card:hover { transform: translateY(-4px); }
+  </style>
+</head>
+<body class="bg-gray-950 text-gray-100 min-h-screen">
+
+  <div class="flex h-screen">
+
+    <!-- Sidebar -->
+    <div class="w-72 bg-gray-900 border-r border-gray-800 p-6 flex flex-col">
+      <div class="flex items-center gap-3 mb-10">
+        <div class="w-9 h-9 bg-emerald-500 rounded-xl flex items-center justify-center text-white font-bold">£</div>
+        <h1 class="text-2xl font-bold tracking-tight">UK InvestTrack</h1>
+      </div>
+
+      <nav class="space-y-1 flex-1">
+        <a href="#" onclick="showSection('dashboard')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800 text-white bg-gray-800">
+          <i class="fas fa-home w-5"></i> Dashboard
+        </a>
+        <a href="#" onclick="showSection('holdings')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800">
+          <i class="fas fa-briefcase w-5"></i> Holdings
+        </a>
+        <a href="#" onclick="showSection('transactions')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800">
+          <i class="fas fa-list-ul w-5"></i> Transactions
+        </a>
+        <a href="#" onclick="showSection('allocation')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800">
+          <i class="fas fa-chart-pie w-5"></i> Allocation
+        </a>
+        <a href="#" onclick="showSection('performance')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800">
+          <i class="fas fa-chart-line w-5"></i> Performance
+        </a>
+        <a href="#" onclick="showSection('watchlist')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800">
+          <i class="fas fa-eye w-5"></i> Watchlist
+        </a>
+        <a href="#" onclick="showSection('news')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800">
+          <i class="fas fa-newspaper w-5"></i> News & Macro
+        </a>
+      </nav>
+
+      <div class="pt-6 border-t border-gray-800 text-xs text-gray-500">
+        Connected to Google Sheets
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 overflow-auto">
+
+      <!-- Top Bar -->
+      <div class="bg-gray-900 border-b border-gray-800 px-8 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-4">
+          <select id="portfolioFilter" onchange="switchPortfolio()" class="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-sm">
+            <option value="ALL">All Portfolios</option>
+          </select>
+        </div>
+        <button onclick="addTransaction()" 
+                class="bg-emerald-600 hover:bg-emerald-700 px-5 py-2.5 rounded-xl flex items-center gap-2 font-medium">
+          <i class="fas fa-plus"></i> New Transaction
+        </button>
+      </div>
+
+      <!-- Dashboard Section -->
+      <div id="dashboard" class="section p-8">
+        <h2 class="text-3xl font-semibold mb-8">Portfolio Overview</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+          <div class="bg-gray-900 rounded-2xl p-6 card">
+            <p class="text-gray-400 text-sm">Total Portfolio Value</p>
+            <p id="totalValue" class="text-4xl font-bold mt-3">£0.00</p>
+            <p id="totalValueChange" class="text-emerald-400 text-sm mt-1">+0.00 (0.0%)</p>
+          </div>
+          <div class="bg-gray-900 rounded-2xl p-6 card">
+            <p class="text-gray-400 text-sm">Total Unrealised P&L</p>
+            <p id="totalPL" class="text-4xl font-bold mt-3">£0.00</p>
+            <p id="totalPLPercent" class="text-emerald-400 text-sm mt-1">0.0%</p>
+          </div>
+          <div class="bg-gray-900 rounded-2xl p-6 card">
+            <p class="text-gray-400 text-sm">Cash Balance</p>
+            <p id="totalCash" class="text-4xl font-bold mt-3">£0.00</p>
+          </div>
+          <div class="bg-gray-900 rounded-2xl p-6 card">
+            <p class="text-gray-400 text-sm">Number of Holdings</p>
+            <p id="numHoldings" class="text-4xl font-bold mt-3">0</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="bg-gray-900 rounded-2xl p-6">
+            <h3 class="font-semibold mb-4">Top Holdings</h3>
+            <div id="topHoldings">Loading...</div>
+          </div>
+          <div class="bg-gray-900 rounded-2xl p-6">
+            <h3 class="font-semibold mb-4">Recent Transactions</h3>
+            <div id="recentTransactions">Loading...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Placeholder sections -->
+      <div id="holdings" class="section p-8 hidden">
+        <h2 class="text-3xl font-semibold mb-6">Holdings</h2>
+        <p class="text-gray-400">Holdings table with live prices, cost basis, P&L (market + FX) will appear here.</p>
+      </div>
+
+      <div id="transactions" class="section p-8 hidden">
+        <h2 class="text-3xl font-semibold mb-6">Transactions</h2>
+        <p class="text-gray-400">Full transaction log and filters will appear here.</p>
+      </div>
+
+      <div id="allocation" class="section p-8 hidden">
+        <h2 class="text-3xl font-semibold mb-6">Asset Allocation</h2>
+        <p class="text-gray-400">Pie charts and breakdown by sector / geography coming soon.</p>
+      </div>
+
+      <div id="performance" class="section p-8 hidden">
+        <h2 class="text-3xl font-semibold mb-6">Performance</h2>
+        <p class="text-gray-400">Time-weighted returns and charts coming soon.</p>
+      </div>
+
+      <div id="watchlist" class="section p-8 hidden">
+        <h2 class="text-3xl font-semibold mb-6">Watchlist</h2>
+        <p class="text-gray-400">Stocks you're watching + news & earnings calendar.</p>
+      </div>
+
+      <div id="news" class="section p-8 hidden">
+        <h2 class="text-3xl font-semibold mb-6">News & Macro</h2>
+        <p class="text-gray-400">UK/US macro news + followed investors updates coming soon.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const WEB_APP_URL = "https://script.google.com/macros/s/YOUR_WEB_APP_URL_HERE/exec";   // ←←← CHANGE THIS
+
+    function showSection(section) {
+      document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+      document.getElementById(section).classList.remove('hidden');
+    }
+
+    async function loadDashboard() {
+      try {
+        const res = await fetch(`${WEB_APP_URL}?action=getDashboard`);
+        const data = await res.json();
+        
+        if (data.success) {
+          document.getElementById("totalValue").textContent = `£${Number(data.totalValue || 0).toLocaleString()}`;
+          document.getElementById("totalPL").textContent = `£${Number(data.totalPL || 0).toLocaleString()}`;
+          // Add more fields as backend develops
+        }
+      } catch(e) {
+        console.error(e);
+      }
+    }
+
+    function addTransaction() {
+      alert("New Transaction form will open here (Buy / Sell / Dividend / Deposit etc.)\n\nThis will be fully functional once backend is connected.");
+    }
+
+    function switchPortfolio() {
+      loadDashboard();
+    }
+
+    // Initialize
+    window.onload = () => {
+      showSection('dashboard');
+      loadDashboard();
+    };
+  </script>
+</body>
+</html>
