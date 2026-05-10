@@ -18,16 +18,16 @@
       </div>
       
       <nav class="space-y-2">
-        <button onclick="showSection('dashboard')" class="w-full text-left px-4 py-3 rounded-2xl hover:bg-gray-800 flex items-center gap-3 bg-gray-800">
+        <button onclick="showSection('dashboard')" class="nav-btn w-full text-left px-4 py-3 rounded-2xl hover:bg-gray-800 flex items-center gap-3 bg-gray-800">
           <i class="fas fa-home"></i> Dashboard
         </button>
-        <button onclick="showSection('holdings')" class="w-full text-left px-4 py-3 rounded-2xl hover:bg-gray-800 flex items-center gap-3">
+        <button onclick="showSection('holdings')" class="nav-btn w-full text-left px-4 py-3 rounded-2xl hover:bg-gray-800 flex items-center gap-3">
           <i class="fas fa-briefcase"></i> Holdings
         </button>
-        <button onclick="showSection('transactions')" class="w-full text-left px-4 py-3 rounded-2xl hover:bg-gray-800 flex items-center gap-3">
+        <button onclick="showSection('transactions')" class="nav-btn w-full text-left px-4 py-3 rounded-2xl hover:bg-gray-800 flex items-center gap-3">
           <i class="fas fa-list"></i> Transactions
         </button>
-        <button onclick="showSection('watchlist')" class="w-full text-left px-4 py-3 rounded-2xl hover:bg-gray-800 flex items-center gap-3">
+        <button onclick="showSection('watchlist')" class="nav-btn w-full text-left px-4 py-3 rounded-2xl hover:bg-gray-800 flex items-center gap-3">
           <i class="fas fa-eye"></i> Watchlist
         </button>
       </nav>
@@ -35,44 +35,35 @@
 
     <!-- Main Content -->
     <div class="flex-1 p-8 overflow-auto">
-      <!-- Dashboard -->
-      <div id="dashboard">
+      <div id="dashboard" class="section">
         <div class="flex justify-between items-center mb-8">
           <h1 class="text-4xl font-bold">Portfolio Dashboard</h1>
-          <div class="flex items-center gap-3">
-            <select id="portfolioSelect" onchange="loadDashboard()" class="bg-gray-800 border border-gray-700 rounded-xl px-4 py-2">
-              <option value="ALL">All Portfolios</option>
-            </select>
-            <button onclick="loadDashboard()" class="bg-gray-800 hover:bg-gray-700 px-5 py-2 rounded-xl flex items-center gap-2">
-              <i class="fas fa-sync"></i> Refresh
-            </button>
-          </div>
+          <button onclick="loadDashboard()" class="bg-gray-800 hover:bg-gray-700 px-5 py-2 rounded-xl flex items-center gap-2">
+            <i class="fas fa-sync"></i> Refresh
+          </button>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="summaryCards">
-          <!-- Cards populated by JS -->
-        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="summaryCards"></div>
 
         <div class="mt-10">
           <h2 class="text-xl font-semibold mb-4">Your Portfolios</h2>
-          <div id="portfoliosList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- Populated by JS -->
-          </div>
+          <div id="portfoliosList" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
         </div>
       </div>
 
-      <!-- Placeholder sections -->
-      <div id="holdings" class="hidden">
+      <div id="holdings" class="section hidden">
         <h2 class="text-3xl font-bold mb-6">Holdings</h2>
-        <p class="text-gray-400">Coming in next phase...</p>
+        <p class="text-gray-400">Holdings view coming in next phase...</p>
       </div>
-      <div id="transactions" class="hidden">
+
+      <div id="transactions" class="section hidden">
         <h2 class="text-3xl font-bold mb-6">Transactions</h2>
-        <p class="text-gray-400">Coming soon...</p>
+        <p class="text-gray-400">Transactions log coming soon...</p>
       </div>
-      <div id="watchlist" class="hidden">
+
+      <div id="watchlist" class="section hidden">
         <h2 class="text-3xl font-bold mb-6">Watchlist</h2>
-        <p class="text-gray-400">Coming soon...</p>
+        <p class="text-gray-400">Watchlist coming soon...</p>
       </div>
     </div>
   </div>
@@ -81,4 +72,72 @@
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbylKpE9h16LFyGrNWMuMgqgci4Gt-8Es0TYyttAzcXZAkxEOlYAqfMjU5Ri64NT7xdp/exec";
 
     async function loadDashboard() {
-     
+      try {
+        const res = await fetch(`${WEB_APP_URL}?action=getDashboard`);
+        const data = await res.json();
+
+        if (data.success) {
+          // Summary Cards
+          document.getElementById("summaryCards").innerHTML = `
+            <div class="bg-gray-900 rounded-3xl p-6">
+              <p class="text-gray-400">Total Value</p>
+              <p class="text-4xl font-bold mt-2">£${Number(data.totalValue).toLocaleString()}</p>
+            </div>
+            <div class="bg-gray-900 rounded-3xl p-6">
+              <p class="text-gray-400">Unrealised P&L</p>
+              <p class="text-4xl font-bold mt-2 text-emerald-400">£${Number(data.totalPL).toLocaleString()}</p>
+            </div>
+            <div class="bg-gray-900 rounded-3xl p-6">
+              <p class="text-gray-400">Cash Balance</p>
+              <p class="text-4xl font-bold mt-2">£${Number(data.totalCash).toLocaleString()}</p>
+            </div>
+            <div class="bg-gray-900 rounded-3xl p-6">
+              <p class="text-gray-400">Holdings</p>
+              <p class="text-4xl font-bold mt-2">${data.numHoldings}</p>
+            </div>
+          `;
+
+          // Portfolios
+          let html = '';
+          if (data.portfolios && data.portfolios.length > 0) {
+            data.portfolios.forEach(p => {
+              html += `
+                <div class="bg-gray-900 rounded-2xl p-5">
+                  <div class="flex justify-between items-start">
+                    <div>
+                      <p class="font-semibold text-lg">${p.name}</p>
+                      <p class="text-sm text-gray-400">${p.type} • ${p.baseCurrency}</p>
+                    </div>
+                    <span class="text-xs bg-emerald-900 text-emerald-400 px-3 py-1 rounded-full">${p.id}</span>
+                  </div>
+                </div>`;
+            });
+          } else {
+            html = `<p class="text-gray-400">No portfolios found. Please add data in the "Portfolios" tab of your Google Sheet.</p>`;
+          }
+          document.getElementById("portfoliosList").innerHTML = html;
+        }
+      } catch(e) {
+        console.error(e);
+        alert("Could not load data. Check Apps Script deployment.");
+      }
+    }
+
+    function showSection(section) {
+      document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+      document.getElementById(section).classList.remove('hidden');
+
+      // Highlight active button
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('bg-gray-800'));
+      const activeBtn = Array.from(document.querySelectorAll('.nav-btn')).find(btn => 
+        btn.getAttribute('onclick').includes(`'${section}'`)
+      );
+      if (activeBtn) activeBtn.classList.add('bg-gray-800');
+
+      if (section === 'dashboard') loadDashboard();
+    }
+
+    window.onload = () => showSection('dashboard');
+  </script>
+</body>
+</html>
