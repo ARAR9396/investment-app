@@ -1,0 +1,195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.3">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;UK Investment Tracker&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>body { font-family: 'Inter', system-ui, sans-serif; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.card { transition: all 0.3s; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.card:hover { transform: translateY(-4px); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body class="bg-gray-950 text-gray-100 min-h-screen"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="flex h-screen"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Sidebar --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="w-72 bg-gray-900 border-r border-gray-800 p-6 flex flex-col"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="flex items-center gap-3 mb-10"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="w-9 h-9 bg-emerald-500 rounded-xl flex items-center justify-center text-white font-bold"&gt;£&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;h1 class="text-2xl font-bold tracking-tight"&gt;UK InvestTrack&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;nav class="space-y-1 flex-1"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;a href="#" onclick="showSection('dashboard')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800 text-white bg-gray-800"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;i class="fas fa-home w-5"&gt;&lt;/i&gt; Dashboard</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;a href="#" onclick="showSection('holdings')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;i class="fas fa-briefcase w-5"&gt;&lt;/i&gt; Holdings</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;a href="#" onclick="showSection('transactions')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;i class="fas fa-list-ul w-5"&gt;&lt;/i&gt; Transactions</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;a href="#" onclick="showSection('allocation')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;i class="fas fa-chart-pie w-5"&gt;&lt;/i&gt; Allocation</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;a href="#" onclick="showSection('performance')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;i class="fas fa-chart-line w-5"&gt;&lt;/i&gt; Performance</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;a href="#" onclick="showSection('watchlist')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;i class="fas fa-eye w-5"&gt;&lt;/i&gt; Watchlist</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;a href="#" onclick="showSection('news')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-800"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;i class="fas fa-newspaper w-5"&gt;&lt;/i&gt; News &amp; Macro</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/nav&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="pt-6 border-t border-gray-800 text-xs text-gray-500"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>Connected to Google Sheets</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Main Content --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="flex-1 overflow-auto"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;!-- Top Bar --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="bg-gray-900 border-b border-gray-800 px-8 py-4 flex justify-between items-center"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="flex items-center gap-4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;select id="portfolioFilter" onchange="switchPortfolio()" class="bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-sm"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;option value="ALL"&gt;All Portfolios&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/select&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button onclick="addTransaction()"<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>class="bg-emerald-600 hover:bg-emerald-700 px-5 py-2.5 rounded-xl flex items-center gap-2 font-medium"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;i class="fas fa-plus"&gt;&lt;/i&gt; New Transaction</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;!-- Dashboard Section --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div id="dashboard" class="section p-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;h2 class="text-3xl font-semibold mb-8"&gt;Portfolio Overview&lt;/h2&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="bg-gray-900 rounded-2xl p-6 card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="text-gray-400 text-sm"&gt;Total Portfolio Value&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p id="totalValue" class="text-4xl font-bold mt-3"&gt;£0.00&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p id="totalValueChange" class="text-emerald-400 text-sm mt-1"&gt;+0.00 (0.0%)&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="bg-gray-900 rounded-2xl p-6 card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="text-gray-400 text-sm"&gt;Total Unrealised P&amp;L&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p id="totalPL" class="text-4xl font-bold mt-3"&gt;£0.00&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p id="totalPLPercent" class="text-emerald-400 text-sm mt-1"&gt;0.0%&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="bg-gray-900 rounded-2xl p-6 card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="text-gray-400 text-sm"&gt;Cash Balance&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p id="totalCash" class="text-4xl font-bold mt-3"&gt;£0.00&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="bg-gray-900 rounded-2xl p-6 card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p class="text-gray-400 text-sm"&gt;Number of Holdings&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p id="numHoldings" class="text-4xl font-bold mt-3"&gt;0&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="grid grid-cols-1 lg:grid-cols-2 gap-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="bg-gray-900 rounded-2xl p-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h3 class="font-semibold mb-4"&gt;Top Holdings&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="topHoldings"&gt;Loading...&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="bg-gray-900 rounded-2xl p-6"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h3 class="font-semibold mb-4"&gt;Recent Transactions&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="recentTransactions"&gt;Loading...&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;!-- Placeholder sections --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div id="holdings" class="section p-8 hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;h2 class="text-3xl font-semibold mb-6"&gt;Holdings&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p class="text-gray-400"&gt;Holdings table with live prices, cost basis, P&amp;L (market + FX) will appear here.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div id="transactions" class="section p-8 hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;h2 class="text-3xl font-semibold mb-6"&gt;Transactions&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p class="text-gray-400"&gt;Full transaction log and filters will appear here.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div id="allocation" class="section p-8 hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;h2 class="text-3xl font-semibold mb-6"&gt;Asset Allocation&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p class="text-gray-400"&gt;Pie charts and breakdown by sector / geography coming soon.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div id="performance" class="section p-8 hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;h2 class="text-3xl font-semibold mb-6"&gt;Performance&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p class="text-gray-400"&gt;Time-weighted returns and charts coming soon.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div id="watchlist" class="section p-8 hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;h2 class="text-3xl font-semibold mb-6"&gt;Watchlist&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p class="text-gray-400"&gt;Stocks you're watching + news &amp; earnings calendar.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div id="news" class="section p-8 hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;h2 class="text-3xl font-semibold mb-6"&gt;News &amp; Macro&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p class="text-gray-400"&gt;UK/US macro news + followed investors updates coming soon.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const WEB_APP_URL = "https://script.google.com/macros/s/YOUR_WEB_APP_URL_HERE/exec"; <span class="Apple-converted-space">  </span>// ←←← CHANGE THIS</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function showSection(section) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.querySelectorAll('.section').forEach(s =&gt; s.classList.add('hidden'));</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById(section).classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>async function loadDashboard() {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const res = await fetch(`${WEB_APP_URL}?action=getDashboard`);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const data = await res.json();</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (data.success) {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>document.getElementById("totalValue").textContent = `£${Number(data.totalValue || 0).toLocaleString()}`;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>document.getElementById("totalPL").textContent = `£${Number(data.totalPL || 0).toLocaleString()}`;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>// Add more fields as backend develops</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>} catch(e) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>console.error(e);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function addTransaction() {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>alert("New Transaction form will open here (Buy / Sell / Dividend / Deposit etc.)\n\nThis will be fully functional once backend is connected.");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>function switchPortfolio() {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>loadDashboard();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// Initialize</p>
+<p class="p1"><span class="Apple-converted-space">    </span>window.onload = () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>showSection('dashboard');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>loadDashboard();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>};</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
