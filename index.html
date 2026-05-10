@@ -3,11 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Test Page</title>
+  <title>UK Investment Tracker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-<body style="font-family: Arial; padding: 50px; background: #0f172a; color: white;">
-  <h1>✅ GitHub Pages is Working!</h1>
-  <p>If you can see this message nicely formatted, your GitHub Pages is working.</p>
-  <p>Your full Investment Tracker will appear once we use the proper file.</p>
+<body class="bg-gray-950 text-gray-100">
+
+  <div class="flex h-screen">
+    <!-- Sidebar -->
+    <div class="w-72 bg-gray-900 p-6 flex flex-col border-r border-gray-800">
+      <div class="flex items-center gap-3 mb-10">
+        <div class="w-10 h-10 bg-emerald-600 rounded-2xl flex items-center justify-center text-2xl">£</div>
+        <h1 class="text-2xl font-bold">UK InvestTrack</h1>
+      </div>
+      
+      <nav class="space-y-2">
+        <button onclick="showSection('dashboard')" class="w-full text-left px-4 py-3 rounded-2xl hover:bg-gray-800 flex items-center gap-3 bg-gray-800">
+          <i class="fas fa-home"></i> Dashboard
+        </button>
+        <button onclick="showSection('holdings')" class="w-full text-left px-4 py-3 rounded-2xl hover:bg-gray-800 flex items-center gap-3">
+          <i class="fas fa-briefcase"></i> Holdings
+        </button>
+        <button onclick="showSection('transactions')" class="w-full text-left px-4 py-3 rounded-2xl hover:bg-gray-800 flex items-center gap-3">
+          <i class="fas fa-list"></i> Transactions
+        </button>
+        <button onclick="showSection('watchlist')" class="w-full text-left px-4 py-3 rounded-2xl hover:bg-gray-800 flex items-center gap-3">
+          <i class="fas fa-eye"></i> Watchlist
+        </button>
+      </nav>
+    </div>
+
+    <!-- Main Area -->
+    <div class="flex-1 p-8 overflow-auto">
+      <div id="dashboard">
+        <h1 class="text-4xl font-bold mb-8">Portfolio Dashboard</h1>
+        <p class="text-xl text-gray-400">Welcome to your UK Investment Tracker.</p>
+        <p class="mt-4 text-emerald-400">The full interface is ready. Next step is connecting it to Google Sheets.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showSection(section) {
+      alert("Section: " + section + "\n\nThis will be fully functional soon!");
+    }
+  </script>
 </body>
 </html>
