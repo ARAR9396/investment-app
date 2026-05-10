@@ -10,11 +10,13 @@
 <body class="bg-gray-950 text-gray-100">
 
   <div class="flex h-screen">
+    <!-- Sidebar -->
     <div class="w-72 bg-gray-900 p-6 flex flex-col border-r border-gray-800">
       <div class="flex items-center gap-3 mb-10">
         <div class="w-10 h-10 bg-emerald-600 rounded-2xl flex items-center justify-center text-2xl font-bold">£</div>
         <h1 class="text-2xl font-bold">UK InvestTrack</h1>
       </div>
+      
       <nav class="space-y-2">
         <button onclick="showSection('dashboard')" class="nav-btn w-full text-left px-4 py-3 rounded-2xl hover:bg-gray-800 flex items-center gap-3 bg-gray-800">
           <i class="fas fa-home"></i> Dashboard
@@ -28,34 +30,44 @@
       </nav>
     </div>
 
+    <!-- Main Content -->
     <div class="flex-1 p-8 overflow-auto">
       <div id="dashboard" class="section">
         <div class="flex justify-between items-center mb-8">
           <h1 class="text-4xl font-bold">Portfolio Dashboard</h1>
-          <button onclick="showNewTransactionModal()" class="bg-emerald-600 hover:bg-emerald-700 px-6 py-3 rounded-2xl flex items-center gap-2">
+          <button onclick="showNewTransactionModal()" 
+                  class="bg-emerald-600 hover:bg-emerald-700 px-6 py-3 rounded-2xl flex items-center gap-2 font-medium">
             <i class="fas fa-plus"></i> New Transaction
           </button>
         </div>
+
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="summaryCards"></div>
+
         <div class="mt-10">
           <h2 class="text-xl font-semibold mb-4">Your Portfolios</h2>
           <div id="portfoliosList" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
         </div>
       </div>
 
-      <div id="holdings" class="section hidden">Holdings section coming soon...</div>
-      <div id="transactions" class="section hidden">Transactions log coming soon...</div>
+      <div id="holdings" class="section hidden">
+        <h2 class="text-3xl font-bold mb-6">Holdings</h2>
+        <p class="text-gray-400">Coming soon...</p>
+      </div>
+      <div id="transactions" class="section hidden">
+        <h2 class="text-3xl font-bold mb-6">Transactions</h2>
+        <p class="text-gray-400">Coming soon...</p>
+      </div>
     </div>
   </div>
 
-  <!-- Transaction Modal -->
+  <!-- New Transaction Modal -->
   <div id="transactionModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50">
     <div class="bg-gray-900 rounded-3xl p-8 w-full max-w-lg">
       <h2 class="text-2xl font-bold mb-6">New Transaction</h2>
 
       <div class="space-y-5">
         <div>
-          <label class="block text-sm text-gray-400 mb-1">Portfolio *</label>
+          <label class="block text-sm text-gray-400 mb-1">Portfolio <span class="text-red-400">*</span></label>
           <select id="modalPortfolio" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3"></select>
         </div>
 
@@ -84,11 +96,11 @@
         <div class="grid grid-cols-3 gap-4">
           <div>
             <label class="block text-sm text-gray-400 mb-1">Shares</label>
-            <input type="number" id="modalShares" step="0.0001" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3">
+            <input type="number" id="modalShares" step="0.0001" oninput="calculateGBP()" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3">
           </div>
           <div>
             <label class="block text-sm text-gray-400 mb-1">Price per Share</label>
-            <input type="number" id="modalPrice" step="0.01" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3">
+            <input type="number" id="modalPrice" step="0.01" oninput="calculateGBP()" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3">
           </div>
           <div>
             <label class="block text-sm text-gray-400 mb-1">Currency</label>
@@ -102,11 +114,11 @@
 
         <div id="fxContainer" class="hidden grid grid-cols-2 gap-4">
           <div>
-            <label class="block text-sm text-gray-400 mb-1">FX Rate (1 USD/EUR = ? GBP)</label>
+            <label class="block text-sm text-gray-400 mb-1">FX Rate (to GBP)</label>
             <input type="number" id="modalFXRate" step="0.0001" value="0.78" oninput="calculateGBP()" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3">
           </div>
           <div>
-            <label class="block text-sm text-gray-400 mb-1">Total Amount in GBP</label>
+            <label class="block text-sm text-gray-400 mb-1">Total Amount GBP</label>
             <input type="number" id="modalAmountGBP" step="0.01" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3">
           </div>
         </div>
@@ -123,8 +135,8 @@
       </div>
 
       <div class="flex gap-3 mt-8">
-        <button onclick="hideModal()" class="flex-1 py-4 rounded-2xl border border-gray-700">Cancel</button>
-        <button onclick="saveTransaction()" class="flex-1 py-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700">Save Transaction</button>
+        <button onclick="hideModal()" class="flex-1 py-4 rounded-2xl border border-gray-700 hover:bg-gray-800">Cancel</button>
+        <button onclick="saveTransaction()" class="flex-1 py-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 font-medium">Save Transaction</button>
       </div>
     </div>
   </div>
@@ -134,10 +146,57 @@
 
     let portfoliosList = [];
 
-    async function loadDashboard() { /* same as before - keep your existing loadDashboard */ }
+    async function loadDashboard() {
+      try {
+        const res = await fetch(`${WEB_APP_URL}?action=getDashboard`);
+        const data = await res.json();
+
+        if (data.success) {
+          portfoliosList = data.portfolios || [];
+
+          // Summary Cards
+          document.getElementById("summaryCards").innerHTML = `
+            <div class="bg-gray-900 rounded-3xl p-6">
+              <p class="text-gray-400">Total Value</p>
+              <p class="text-4xl font-bold mt-2">£${Number(data.totalValue || 0).toLocaleString()}</p>
+            </div>
+            <div class="bg-gray-900 rounded-3xl p-6">
+              <p class="text-gray-400">Unrealised P&L</p>
+              <p class="text-4xl font-bold mt-2 text-emerald-400">£${Number(data.totalPL || 0).toLocaleString()}</p>
+            </div>
+            <div class="bg-gray-900 rounded-3xl p-6">
+              <p class="text-gray-400">Cash</p>
+              <p class="text-4xl font-bold mt-2">£${Number(data.totalCash || 0).toLocaleString()}</p>
+            </div>
+            <div class="bg-gray-900 rounded-3xl p-6">
+              <p class="text-gray-400">Holdings</p>
+              <p class="text-4xl font-bold mt-2">${data.numHoldings || 0}</p>
+            </div>
+          `;
+
+          // Portfolios List
+          let html = '';
+          data.portfolios.forEach(p => {
+            html += `
+              <div class="bg-gray-900 rounded-2xl p-5">
+                <p class="font-semibold">${p.name}</p>
+                <p class="text-sm text-gray-400">${p.type} • ${p.baseCurrency}</p>
+              </div>`;
+          });
+          document.getElementById("portfoliosList").innerHTML = html || "<p class='text-gray-400'>No portfolios found. Add some in Google Sheet.</p>";
+        }
+      } catch(e) {
+        console.error(e);
+      }
+    }
 
     function showNewTransactionModal() {
+      if (portfoliosList.length === 0) {
+        alert("No portfolios loaded. Please make sure you have data in the 'Portfolios' tab.");
+        return;
+      }
       document.getElementById('transactionModal').classList.remove('hidden');
+      
       const select = document.getElementById('modalPortfolio');
       select.innerHTML = '';
       portfoliosList.forEach(p => {
@@ -157,8 +216,8 @@
       const shares = parseFloat(document.getElementById('modalShares').value) || 0;
       const price = parseFloat(document.getElementById('modalPrice').value) || 0;
       const fx = parseFloat(document.getElementById('modalFXRate').value) || 1;
-      const totalForeign = shares * price;
-      document.getElementById('modalAmountGBP').value = (totalForeign * fx).toFixed(2);
+      const totalGBP = (shares * price * fx).toFixed(2);
+      document.getElementById('modalAmountGBP').value = totalGBP;
     }
 
     function hideModal() {
@@ -178,7 +237,7 @@
           currency: document.getElementById("modalCurrency").value,
           fxRate: document.getElementById("modalFXRate").value || 1,
           amountGBP: document.getElementById("modalAmountGBP").value,
-          fees: document.getElementById("modalFees").value,
+          fees: document.getElementById("modalFees").value || 0,
           notes: document.getElementById("modalNotes").value
         };
 
@@ -198,7 +257,7 @@
         }
       } catch (e) {
         console.error(e);
-        alert("Connection error. Make sure your Apps Script is deployed with 'Anyone' access.");
+        alert("Connection error. Please check your Apps Script is deployed correctly.");
       }
     }
 
