@@ -38,9 +38,15 @@
       <div id="dashboard" class="section">
         <div class="flex justify-between items-center mb-8">
           <h1 class="text-4xl font-bold">Portfolio Dashboard</h1>
-          <button onclick="loadDashboard()" class="bg-gray-800 hover:bg-gray-700 px-5 py-2 rounded-xl flex items-center gap-2">
-            <i class="fas fa-sync"></i> Refresh
-          </button>
+          <div class="flex gap-3">
+            <button onclick="showNewTransactionModal()" 
+                    class="bg-emerald-600 hover:bg-emerald-700 px-6 py-3 rounded-2xl flex items-center gap-2 font-medium">
+              <i class="fas fa-plus"></i> New Transaction
+            </button>
+            <button onclick="loadDashboard()" class="bg-gray-800 hover:bg-gray-700 px-5 py-3 rounded-2xl">
+              <i class="fas fa-sync"></i>
+            </button>
+          </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="summaryCards"></div>
@@ -51,19 +57,75 @@
         </div>
       </div>
 
-      <div id="holdings" class="section hidden">
-        <h2 class="text-3xl font-bold mb-6">Holdings</h2>
-        <p class="text-gray-400">Holdings view coming in next phase...</p>
+      <!-- Other sections -->
+      <div id="holdings" class="section hidden"><h2 class="text-3xl font-bold">Holdings</h2><p class="text-gray-400 mt-4">Coming soon...</p></div>
+      <div id="transactions" class="section hidden"><h2 class="text-3xl font-bold">Transactions</h2><p class="text-gray-400 mt-4">Coming soon...</p></div>
+      <div id="watchlist" class="section hidden"><h2 class="text-3xl font-bold">Watchlist</h2><p class="text-gray-400 mt-4">Coming soon...</p></div>
+    </div>
+  </div>
+
+  <!-- New Transaction Modal -->
+  <div id="transactionModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+    <div class="bg-gray-900 rounded-3xl p-8 w-full max-w-lg">
+      <h2 class="text-2xl font-bold mb-6">New Transaction</h2>
+      
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm text-gray-400 mb-1">Portfolio</label>
+          <select id="modalPortfolio" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3"></select>
+        </div>
+
+        <div>
+          <label class="block text-sm text-gray-400 mb-1">Type</label>
+          <select id="modalType" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3">
+            <option value="Buy">Buy</option>
+            <option value="Sell">Sell</option>
+            <option value="Dividend">Dividend</option>
+            <option value="Interest">Interest</option>
+            <option value="Deposit">Deposit</option>
+            <option value="Withdrawal">Withdrawal</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm text-gray-400 mb-1">Date</label>
+            <input type="date" id="modalDate" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3">
+          </div>
+          <div>
+            <label class="block text-sm text-gray-400 mb-1">Ticker / Symbol</label>
+            <input type="text" id="modalTicker" placeholder="e.g. AAPL" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-4">
+          <div>
+            <label class="block text-sm text-gray-400 mb-1">Shares</label>
+            <input type="number" id="modalShares" step="0.01" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3">
+          </div>
+          <div>
+            <label class="block text-sm text-gray-400 mb-1">Price</label>
+            <input type="number" id="modalPrice" step="0.01" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3">
+          </div>
+          <div>
+            <label class="block text-sm text-gray-400 mb-1">Currency</label>
+            <select id="modalCurrency" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3">
+              <option value="GBP">GBP</option>
+              <option value="USD">USD</option>
+              <option value="EUR">EUR</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm text-gray-400 mb-1">Notes</label>
+          <textarea id="modalNotes" rows="2" class="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3"></textarea>
+        </div>
       </div>
 
-      <div id="transactions" class="section hidden">
-        <h2 class="text-3xl font-bold mb-6">Transactions</h2>
-        <p class="text-gray-400">Transactions log coming soon...</p>
-      </div>
-
-      <div id="watchlist" class="section hidden">
-        <h2 class="text-3xl font-bold mb-6">Watchlist</h2>
-        <p class="text-gray-400">Watchlist coming soon...</p>
+      <div class="flex gap-3 mt-8">
+        <button onclick="hideModal()" class="flex-1 py-4 rounded-2xl border border-gray-700 hover:bg-gray-800">Cancel</button>
+        <button onclick="saveTransaction()" class="flex-1 py-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 font-medium">Save Transaction</button>
       </div>
     </div>
   </div>
@@ -88,7 +150,7 @@
               <p class="text-4xl font-bold mt-2 text-emerald-400">£${Number(data.totalPL).toLocaleString()}</p>
             </div>
             <div class="bg-gray-900 rounded-3xl p-6">
-              <p class="text-gray-400">Cash Balance</p>
+              <p class="text-gray-400">Cash</p>
               <p class="text-4xl font-bold mt-2">£${Number(data.totalCash).toLocaleString()}</p>
             </div>
             <div class="bg-gray-900 rounded-3xl p-6">
@@ -99,42 +161,69 @@
 
           // Portfolios
           let html = '';
-          if (data.portfolios && data.portfolios.length > 0) {
-            data.portfolios.forEach(p => {
-              html += `
-                <div class="bg-gray-900 rounded-2xl p-5">
-                  <div class="flex justify-between items-start">
-                    <div>
-                      <p class="font-semibold text-lg">${p.name}</p>
-                      <p class="text-sm text-gray-400">${p.type} • ${p.baseCurrency}</p>
-                    </div>
-                    <span class="text-xs bg-emerald-900 text-emerald-400 px-3 py-1 rounded-full">${p.id}</span>
-                  </div>
-                </div>`;
-            });
-          } else {
-            html = `<p class="text-gray-400">No portfolios found. Please add data in the "Portfolios" tab of your Google Sheet.</p>`;
-          }
-          document.getElementById("portfoliosList").innerHTML = html;
+          data.portfolios.forEach(p => {
+            html += `<div class="bg-gray-900 rounded-2xl p-5"><p class="font-semibold">${p.name}</p><p class="text-sm text-gray-400">${p.type}</p></div>`;
+          });
+          document.getElementById("portfoliosList").innerHTML = html || "<p>No portfolios yet.</p>";
         }
       } catch(e) {
         console.error(e);
-        alert("Could not load data. Check Apps Script deployment.");
       }
     }
 
     function showSection(section) {
       document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
       document.getElementById(section).classList.remove('hidden');
-
-      // Highlight active button
-      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('bg-gray-800'));
-      const activeBtn = Array.from(document.querySelectorAll('.nav-btn')).find(btn => 
-        btn.getAttribute('onclick').includes(`'${section}'`)
-      );
-      if (activeBtn) activeBtn.classList.add('bg-gray-800');
-
       if (section === 'dashboard') loadDashboard();
+    }
+
+    function showNewTransactionModal() {
+      document.getElementById('transactionModal').classList.remove('hidden');
+      // You can improve this later to load real portfolios into the dropdown
+    }
+
+    function hideModal() {
+      document.getElementById('transactionModal').classList.add('hidden');
+    }
+
+    async function saveTransaction() {
+      const portfolioId = document.getElementById('modalPortfolio').value || "P1";
+      const type = document.getElementById('modalType').value;
+      const date = document.getElementById('modalDate').value;
+      const ticker = document.getElementById('modalTicker').value.toUpperCase();
+      const shares = document.getElementById('modalShares').value;
+      const price = document.getElementById('modalPrice').value;
+      const currency = document.getElementById('modalCurrency').value;
+      const notes = document.getElementById('modalNotes').value;
+
+      try {
+        const res = await fetch(WEB_APP_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({
+            action: 'addTransaction',
+            portfolioId: portfolioId,
+            type: type,
+            date: date,
+            ticker: ticker,
+            shares: shares,
+            price: price,
+            currency: currency,
+            notes: notes
+          })
+        });
+
+        const result = await res.json();
+        if (result.success) {
+          alert("✅ Transaction saved successfully!");
+          hideModal();
+          loadDashboard();   // Refresh dashboard
+        } else {
+          alert("Error: " + result.error);
+        }
+      } catch(e) {
+        alert("Failed to save transaction");
+      }
     }
 
     window.onload = () => showSection('dashboard');
